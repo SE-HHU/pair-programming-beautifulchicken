@@ -1,0 +1,5 @@
+# ninja log v5
+9	1213	6879464875333519	CMakeFiles/pairCoding.dir/checkAnswers.cpp.obj	7f676dcec0aefb3
+2	1370	6879468476966280	CMakeFiles/pairCoding.dir/spawnQuestions.cpp.obj	f17817673b653645
+0	144	6879588881453813	build.ninja	768a4bc76949a38c
+1370	1509	6879468478366291	pairCoding.exe	225a7077807e7a4a
