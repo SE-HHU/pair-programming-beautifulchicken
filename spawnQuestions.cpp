@@ -1,9 +1,8 @@
 #include <bits/stdc++.h>
-#include "checkAnswers.h"
 using namespace std;
 
 /**
-* 变量解释
+* 变量说明
 * 习题数量
 * 整数最小值、整数最大值、真分数分母最大值
 * 运算符个数、是否允许加法、是否允许减法、是否允许乘法、是否允许除法
@@ -21,28 +20,30 @@ struct fractionclass{
     int molecule=0,denominator=0;
 };
 
+struct FractionClassDemo{
+    int molecule,denominator;
+};
+
 void gentxt();
 void init();
 int gcd(int a,int b);
 void generate();
-void calculate(string str);
+void operatorsBuilding(int operater[]);
+void caculate(string s);
+void mutiCaculate(string str,stack<struct FractionClassDemo> stt);
 
 int main(){
-
     srand((int)time(0));
     init();
     while(ActuQuan<=QuesNum){
         generate();
         ActuQuan++;
     }
-    start();
     return 0;
 }
 
 void gentxt(){
-    /**
-    * 创建Exercises和Answers文件
-    */
+    //创建Exercises和Answers文件
     f.open("Exercises.txt",ios::out);
     f.close();
     f.open("Answers.txt",ios::out);
@@ -84,6 +85,7 @@ void init(){
     cout<<"是否允许分数(1-允许,0-不允许)? ";
     cin>>fraction;
     cout<<endl;
+    return ;
 }
 
 int gcd(int a,int b){
@@ -98,7 +100,7 @@ void generate(){
     * 考虑生成分数(真分数或者带分数)
     */
     f.open("Exercises.txt",ios::out|ios::app);
-
+    f<<ActuQuan<<": ";
 
     int operater[10];
     /**
@@ -106,17 +108,9 @@ void generate(){
     * 判断生成的运算符是否满足用户需求
     */
     memset(operater,0,sizeof(operater));
-    for(int i=1;i<=OpeNum;i++){
-        bool flag=false;
-        operater[i]=rand()%4+1;
-        while(flag==false){
-            if(operater[i]==1&&addi==1)		flag=true;
-            if(operater[i]==2&&subtrac==1)	flag=true;
-            if(operater[i]==3&&multip==1)	flag=true;
-            if(operater[i]==4&&divi==1)		flag=true;
-            operater[i]=rand()%4+1;
-        }
-    }
+    operatorsBuilding(operater);
+
+
     /**
     * 如果是a个运算符，就要生成a+1个数字参与运算
     * 数字中还要有几率生成分数，即随机生成 数字 真分数 带分数
@@ -128,7 +122,7 @@ void generate(){
     */
     string str="";
 
-    f<<ActuQuan<<": ";
+
     int br=rand()%100+1,wdr=0;
     if(bracket==1&&br<=25&&OpeNum!=1)	wdr=rand()%OpeNum+1;
     int opeNum[10];
@@ -298,24 +292,70 @@ void generate(){
     }
     str+="@";
     f<<" ="<<endl;
+
+
     f.close();
-    calculate(str);
+    caculate(str);
+    return ;
 }
-void calculate(string str){
+
+void operatorsBuilding(int operater[]){
+    /**
+    * 随机生成运算符
+    * 判断生成的运算符是否满足用户需求
+    */
+    for(int i=1;i<=OpeNum;i++){
+        bool flag=false;
+        operater[i]=rand()%4+1;
+        while(flag==false){
+            if(operater[i]==1&&addi==1)		flag=true;
+            if(operater[i]==2&&subtrac==1)	flag=true;
+            if(operater[i]==3&&multip==1)	flag=true;
+            if(operater[i]==4&&divi==1)		flag=true;
+            operater[i]=rand()%4+1;
+        }
+    }
+}
+
+void caculate(string str){
     /**
     * 计算后缀表达式的答案
     * 输出答案到文件中
     */
-    struct FractionClassDemo{
-        int molecule,denominator;
-    };
-    stack<struct FractionClassDemo> stt;
 
+    stack<struct FractionClassDemo> stt;
 
     int ansInt=0,ansMole=0,ansDeno=0;
     f.open("Answers.txt",ios::out|ios::app);
 
     f<<ActuQuan<<": ";
+
+    mutiCaculate(str,stt);
+
+    ansMole=stt.top().molecule;
+    ansDeno=stt.top().denominator;
+
+    ansInt=ansMole/ansDeno;
+    ansMole=ansMole%ansDeno;
+
+    int p=gcd(ansMole,ansDeno);
+    ansMole/=p;
+    ansDeno/=p;
+
+    if(ansInt==0&&ansMole!=0&&ansDeno!=0)	f<<ansMole<<"/"<<ansDeno;
+    else{
+        f<<ansInt;
+        if(ansMole!=0&&ansDeno!=0)	f<<"U"<<ansMole<<"/"<<ansDeno;
+    }
+
+    f<<endl;
+    f.close();
+}
+
+void mutiCaculate(string str,stack<struct FractionClassDemo> stt){
+    /**
+    * 具体处理后缀表达式，并进行初步运算
+    */
     for(int i=0;i<str.length();i++){
         if(str[i]=='@')		break;
         if(str[i]=='.')		continue;
@@ -399,25 +439,4 @@ void calculate(string str){
             stt.push(answer);
         }
     }
-
-    ansMole=stt.top().molecule;
-    ansDeno=stt.top().denominator;
-
-
-    ansInt=ansMole/ansDeno;
-    ansMole=ansMole%ansDeno;
-
-    int p=gcd(ansMole,ansDeno);
-    ansMole/=p;
-    ansDeno/=p;
-
-    if(ansInt==0&&ansMole!=0&&ansDeno!=0)	f<<ansMole<<"/"<<ansDeno;
-    else{
-        f<<ansInt;
-        if(ansMole!=0&&ansDeno!=0)	f<<"U"<<ansMole<<"/"<<ansDeno;
-    }
-
-
-    f<<endl;
-    f.close();
 }

@@ -1,13 +1,30 @@
 #include <bits/stdc++.h>
 using namespace std;
 const int maxn=1000;
-string str[maxn],my[maxn],ques[maxn];
+
+int tmp=0,ant=0,sf=0;
 int ppp[maxn][2];
 vector<int> correct,wrong;
+string str[maxn],my[maxn],ques[maxn];
+fstream f;
 
-void start(){
-    int tmp=0,ant=0,sf=0;
+void filereading();
+void judgingcorrect();
+void judgingrepeat();
 
+int main(){
+    filereading();
+    f.open("Grade.txt",ios::out);
+    judgingcorrect();
+    judgingrepeat();
+    f.close();
+    return 0;
+}
+
+void filereading(){
+    /**
+    * 分别打开题目、标准答案、用户答案三个文件并存入数组中方便后续操作
+    */
     ifstream infile;
     infile.open("Answers.txt", ios::in);
     string buf;
@@ -34,25 +51,37 @@ void start(){
         my[ant]=buffer;
         ant++;
     }
+}
 
+void judgingcorrect(){
+    /**
+    * 判断用户答案的对错，将对错的题目都输出到文件中
+    */
     for(int i=0;i<max(ant,tmp);i++){
         if(str[i]==my[i]){
             correct.push_back(i+1);
         }else	wrong.push_back(i+1);
     }
-    cout<<"Correct: "<<correct.size()<<" (";
-    for(int i=0;i<correct.size();i++){
-        cout<<correct[i];
-        if(i!=correct.size()-1)	cout<<",";
-    }
-    cout<<")"<<endl;
-    cout<<"Wrong: "<<wrong.size()<<" (";
-    for(int i=0;i<wrong.size();i++){
-        cout<<wrong[i];
-        if(i!=wrong.size()-1)	cout<<",";
-    }
-    cout<<")"<<endl;
 
+    f<<"Correct: "<<correct.size()<<" (";
+    for(int i=0;i<correct.size();i++){
+        f<<correct[i];
+        if(i!=correct.size()-1)	f<<",";
+    }
+    f<<")"<<endl;
+
+    f<<"Wrong: "<<wrong.size()<<" (";
+    for(int i=0;i<wrong.size();i++){
+        f<<wrong[i];
+        if(i!=wrong.size()-1)	f<<",";
+    }
+    f<<")"<<endl;
+}
+
+void judgingrepeat(){
+    /**
+    * 输出所有题目中重复的题目
+    */
     int repe=0;
     for(int i=0;i<tmp;i++){
         for(int j=0;j<tmp;j++){
@@ -84,11 +113,11 @@ void start(){
             }
         }
     }
-    cout<<"Repeat:"<<repe<<endl;
+    f<<"Repeat:"<<repe<<endl;
     if(repe!=0){
-        cout<<"RepeatDetail:"<<endl;
+        f<<"RepeatDetail:"<<endl;
         for(int i=0;i<repe;i++){
-            cout<<"("<<i<<") "<<ppp[i][0]<<","<<ques[ppp[i][0]]<<" Repeat "<<ppp[i][1]<<","<<ques[ppp[i][1]]<<endl;
+            f<<"("<<i<<") "<<ppp[i][0]<<","<<ques[ppp[i][0]]<<" Repeat "<<ppp[i][1]<<","<<ques[ppp[i][1]]<<endl;
         }
     }
 }
