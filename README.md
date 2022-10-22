@@ -28,6 +28,10 @@ Reviewer：2106050119 包涵（`6lszxz`）&#x20;
 | 计算工作量     | 1         | 6.3      | 0.5       | 3.4      |
 | 事后总结&改进计划 | 6         | 37.5     | 1.5       | 10.3     |
 
+## 程序流程图
+
+![流程图](https://raw.githubusercontent.com/SE-HHU/pair-programming-beautifulchicken/main/mindMap.png)
+
 ## 程序功能划分
 
 ## 代码复核审查表
