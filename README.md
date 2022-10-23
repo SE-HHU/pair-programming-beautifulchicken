@@ -34,6 +34,23 @@ Reviewer：2106050119 包涵（`6lszxz`）&#x20;
 
 ## 程序功能划分
 
+### 在`spawnQuestions`文件中
+
+| 函数 |对应功能 |
+| --- | --- |
+| `init` | 初始化，询问相应的变量并输入 |
+| `gentxt` | 生成对应的`Exercise`和`Answer`文件 |
+| `generate` | 生成题目 |
+| `calculate` | 计算答案 |
+
+### 在`checkAnswer.h`中
+
+| 函数 | 对应功能 |
+| --- | --- |
+| `filereading` | 打开文件方便后续操作 |
+| `judgingcorrect` | 判断用户答案正确与否 |
+| `judgingrepeat` | 输出题目中重复的题目 |
+
 ## 代码复核审查表
 
 ### 概要部分
