@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+#include "checkAnswers.h"
 using namespace std;
 
 /**
@@ -33,11 +34,23 @@ void caculate(string s);
 void mutiCaculate(string str,stack<struct FractionClassDemo> stt);
 
 int main(){
-    srand((int)time(0));
-    init();
-    while(ActuQuan<=QuesNum){
-        generate();
-        ActuQuan++;
+    cout<<"输入功能类型：";
+    int op ;
+    cin>>op;
+    switch (op) {
+        case 2:
+            srand((int)time(0));
+            init();
+            while(ActuQuan<=QuesNum){
+                generate();
+                ActuQuan++;
+            }
+            break;
+        case 1:
+            start();
+            break;
+        default:
+            cout<<"参数不合法";
     }
     return 0;
 }

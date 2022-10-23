@@ -12,7 +12,7 @@ void filereading();
 void judgingcorrect();
 void judgingrepeat();
 
-int main(){
+int start(){
     filereading();
     f.open("Grade.txt",ios::out);
     judgingcorrect();
